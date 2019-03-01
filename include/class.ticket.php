@@ -1727,6 +1727,15 @@ implements RestrictedAccess, Threadable {
             $note = $this->logNote($title, $comments, $assigner, false);
         }
 
+        //Auto assign to assignee dept
+        if ($assignee instanceof Staff)
+        {
+            $ticketDeptId = $assignee->getDeptId();
+
+            $this->setDeptId($ticketDeptId);
+            $this->logEvent('transferred', array('dept' => $ticketDeptId));   
+        }
+
         // See if we need to send alerts
         if (!$alert || !$cfg->alertONAssignment())
             return true; //No alerts!
