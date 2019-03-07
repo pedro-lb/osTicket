@@ -1730,10 +1730,13 @@ implements RestrictedAccess, Threadable {
         //Auto assign to assignee dept
         if ($assignee instanceof Staff)
         {
-            $ticketDeptId = $assignee->getDeptId();
+            $newTicketDeptId = $assignee->getDeptId();
+            $currentTicketDeptId = $this->getDeptId();
 
-            $this->setDeptId($ticketDeptId);
-            $this->logEvent('transferred', array('dept' => $ticketDeptId));   
+            if ($newTicketDeptId != $currentTicketDeptId){
+                $this->setDeptId($newTicketDeptId);
+                $this->logEvent('transferred', array('dept' => $newTicketDeptId));   
+            }
         }
 
         // See if we need to send alerts
